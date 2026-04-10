@@ -114,7 +114,18 @@ void ADC_DeInit(ADC_RegDef_t *pADCx);
  */
 
 void ADC_StartConversion(ADC_RegDef_t *pADCx);
-uint32_t ADC_GetResult(ADC_RegDef_t *pADCx);
+uint32_t ADC_GetResult(ADC_RegDef_t *pADCx);	// blocking
 
+/*
+ * Interrupt-based function
+ */
+void ADC_StartConversion_IT(ADC_RegDef_t *pADCx);
+void ADC_IRQInterruptConfig(uint8_t IRQNumber, uint8_t EnOrDi);
+
+/*
+ * Interrupt and Flag Management
+ */
+uint8_t ADC_GetFlagStatus(ADC_RegDef_t *pADCx, uint32_t flag_pos);
+uint32_t ADC_ReadDataReg(ADC_RegDef_t *pADCx);
 
 #endif /* INC_STM32L47XXX_ADC_DRIVER_H_ */
