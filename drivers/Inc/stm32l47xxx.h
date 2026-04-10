@@ -176,6 +176,8 @@ typedef struct {
 	__vo uint32_t BSRR;				/* GPIO port bit set/reset register 				Address offset: 0x18 */
 	__vo uint32_t LCKR;				/* GPIO port configuration lock register 			Address offset: 0x1C */
 	__vo uint32_t AFR[2];			/* AFR[0]: GPIO alternate function low register, AFR[1]: GPIO alternate function high register		Address offset: 0x20, 0x24 */
+	__vo uint32_t BRR;				/* GPIO port bit reset register 					Address offset: 0x28 */
+	__vo uint32_t ASCR;				/* GPIO analog switch control register				Address offset: 0x2C */
 }GPIO_RegDef_t;
 
 typedef struct {
@@ -346,26 +348,6 @@ typedef struct
 	__vo uint32_t RDR;		/* 0x24: USART receive data register */
 	__vo uint32_t TDR;		/* 0x28: USART transmit data register */
 }USART_RegDef_t;
-
-
-/*
- * Register Bit Definitions for ADC
- */
-
-// ADC Control Register (ADC_CR) bits
-#define ADC_CR_ADEN_POS			(0U)	/* ADEN: ADC enable control */
-#define ADC_CR_ADSTART_POS     	(2U)	/* ADSTART: ADC start of regular conversion */
-#define ADC_CR_ADVREGEN_POS    	(28U)	/* ADVREGEN: ADC voltage regulator enable */
-#define ADC_CR_DEEPPWD_POS     	(29U)	/* DEEPPWD: Deep-power-down enable */
-#define ADC_CR_ADCAL_POS       	(31U)	/* ADCAL: ADC calibration */
-
-// ADC Status Register (ADC_ISR) bits
-#define ADC_ISR_ADRDY_POS      	(0U)	/* ADRDY: ADC ready */
-#define ADC_ISR_EOC_POS        	(2U)	/* EOC: End of conversion flag */
-
-// ADC Common Control Register (ADC_CCR) bits
-#define ADC_CCR_CKMODE_POS		(16U)	/* CKMODE[1:0]: ADC clock mode */
-
 
 /*
  * Peripheral definitions (peripheral base addresses typecasted to xxx_RegDef_t)
@@ -659,6 +641,11 @@ typedef struct
 #define IRQ_NO_UART5		53
 #define IRQ_NO_LPUART1		70
 
+/*
+ * IRQ Number of MCU for ADC
+ */
+#define IRQ_NO_ADC1_2		18
+#define IRQ_NO_ADC3			47
 
 
 /*
@@ -814,7 +801,7 @@ typedef struct
 
 
 /******************************************************************
- * Bit position definitions of I2C peripheral
+ * Bit position definitions of USART peripheral
  ******************************************************************/
 /*
  * Bit position definitions for USART_CR1
@@ -868,6 +855,35 @@ typedef struct
 #define USART_ISR_CTS       9   // CTS flag
 #define USART_ISR_BUSY      16  // Busy flag
 
+
+
+/******************************************************************
+ * Bit position definitions of ADC peripheral
+ ******************************************************************/
+/*
+ * Bit position definitions for ADC_CR (Control Register)
+ */
+#define ADC_CR_ADEN_POS          0
+#define ADC_CR_ADDIS_POS         1
+#define ADC_CR_ADSTART_POS       2  // Starts the conversion
+#define ADC_CR_DEEPPWD_POS       29
+#define ADC_CR_ADVREGEN_POS      28
+#define ADC_CR_ADCAL_POS         31
+
+/*
+ * Bit position definitions for ADC_ISR (Interrupt and Status Register)
+ */
+#define ADC_ISR_ADRDY_POS        0
+#define ADC_ISR_EOC_POS          2  // End of conversion flag
+
+/*
+ * Bit position definitions for ADC_IER (Interrupt Enable Register)
+ */
+#define ADC_IER_ADRDYIE_POS      0
+#define ADC_IER_EOSMPIE_POS      1
+#define ADC_IER_EOCIE_POS        2  // Enables the EOC interrupt!
+#define ADC_IER_EOSIE_POS        3
+#define ADC_IER_OVRIE_POS        4
 
 
 #include "stm32l47xxx_gpio_driver.h"

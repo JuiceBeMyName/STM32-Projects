@@ -220,6 +220,20 @@ void GPIO_Init(GPIO_Handle_t *pGPIOHandle)
             		AF5 = 0111
 		 */
 	}
+
+	// ==========================================================
+	// 6. STM32L4 QUIRK: CLOSE THE ANALOG SWITCH
+	// ==========================================================
+	if(pGPIOHandle->GPIO_PinConfig.GPIO_PinMode == GPIO_MODE_ANALOG)
+	{
+		// Close the physical switch connecting the pin to the ADC multiplexer
+		pGPIOHandle->pGPIOx->ASCR |= (1 << pGPIOHandle->GPIO_PinConfig.GPIO_PinNumber);
+	}
+	else
+	{
+		// If it's not analog, make sure the switch is open to save power
+		pGPIOHandle->pGPIOx->ASCR &= ~(1 << pGPIOHandle->GPIO_PinConfig.GPIO_PinNumber);
+	}
 }
 
 
